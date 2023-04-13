@@ -15,7 +15,7 @@ while True:
     else:
         print("La clave solo puede contener letras del alfabeto inglés")
 
-#ESTO ES NECESARIO?
+#ESTO ES NECESARIO? SI
 while True:
     arc_d = input("Ingrese nombre del archivo para la encripción:")
     if arc_d == arc_o:
