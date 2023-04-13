@@ -54,13 +54,12 @@ def main():
     print("≡≡Encriptador de Cifrado de Vigenère≡≡")
     arc_o, clave, arc_d = pedir_nombres()
     while not comprobar_archivo(arc_o):
-        arc_o = input("Ingrese nombre del archivo en texto plano: ")
+         arc_o = input("Ingrese nombre del archivo en texto plano: ")
     while not comprobar_clave(clave)[0]:
         clave = input("Ingrese la clave: ")
-    arc_d = comprobar_archivo_destino(arc_o, arc_d)
+    
     l_final = encripcion(arc_o, comprobar_clave(clave)[1])
     escribir_lineas(arc_d, l_final)
 
 if __name__ == "__main__":
     main()
-

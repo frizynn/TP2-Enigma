@@ -6,7 +6,7 @@ while True:
         open(arc_o).close() #Comprobar si se puede abrir
         break
     except:
-        print("No se pudo abrir el archivo")
+        print("...\nNo se pudo abrir el archivo")
 
 while True:
     clave = input("Ingrese la clave: ") #Ingresar la clave de encriptado
@@ -14,7 +14,7 @@ while True:
         clave = clave.lower()
         break
     else:
-        print("La clave solo puede contener letras del alfabeto inglés") #Chequear si es valida
+        print("...\nLa clave solo puede contener letras del alfabeto inglés") #Chequear si es valida
 
 while True:
     arc_d = input("Ingrese nombre del archivo para la encripción:") #Ingreso del nombre del archivo para la encripción
@@ -36,7 +36,7 @@ with open(arc_o) as f: #se vuelve a abrir el archivo para comenzar en la primera
                 l_chars.append(letra)
         l_final.append("".join(l_chars) + "\n") #Se agrega a la lista final el string encriptado 
         
-l_final[-1] = l_final[-1][:-1] # se elimina el \n. Por que se hace? es necesario para el writelines. 
+l_final[-1] = l_final[-1][:-1] # se elimina el \n. 
 with open(arc_d, "w") as f:
     f.writelines(l_final)
 
