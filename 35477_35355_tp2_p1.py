@@ -1,53 +1,43 @@
 print("≡≡Encriptador de Cifrado de Vigenère≡≡")
+  
 while True:
-    arc_o = input("Ingrese nombre del archivo en texto plano: ")
+    arc_o = input("Ingrese nombre del archivo en texto plano: ") #Tomar archivo 
     try:
-        open(arc_o).close()
+        open(arc_o).close() #Comprobar si se puede abrir
         break
     except:
         print("No se pudo abrir el archivo")
 
 while True:
-    clave = input("Ingrese la clave: ")
+    clave = input("Ingrese la clave: ") #Ingresar la clave de encriptado
     if clave.isalpha():
         clave = clave.lower()
         break
     else:
-        print("La clave solo puede contener letras del alfabeto inglés")
+        print("La clave solo puede contener letras del alfabeto inglés") #Chequear si es valida
 
-#ESTO ES NECESARIO? SI
 while True:
-    arc_d = input("Ingrese nombre del archivo para la encripción:")
-    if arc_d == arc_o:
-        rta = input("Ha ingresado el mismo archivo de origen que distino. Está seguro de que quiere sobreescribir los datos? (Y/N)")
-        if rta == "Y":
-            break
-    else:
-        break
+    arc_d = input("Ingrese nombre del archivo para la encripción:") #Ingreso del nombre del archivo para la encripción
+    if arc_d != arc_o or input("Ha ingresado el mismo archivo de origen que destino. Está seguro de que quiere sobreescribir los datos? (Y/N)").lower() == "y":
+        break #Si es el mismo archivo de origen que destino, se pregunta si quiere sobreescribir los datos (Y/N)
 
-l_lineas = []
+l_final = [] 
 index = 0
-s_aux = ""
-l_final = []
 
-with open(arc_o) as f:
-    lineas = f.readlines()
-for linea in lineas:
-    l_lineas.append(linea.rstrip().lower())
-for i in l_lineas:
-    s_aux = ""
-    for letra in i:
-        if letra.isalpha():
-            cambio_letra = chr(((ord(letra) - 97 + ord(clave[index]) - 97) % 26) + 97)
-            s_aux += cambio_letra
-            if len(clave) - 1 == index:
-                index = 0
+with open(arc_o) as f: #se vuelve a abrir el archivo para comenzar en la primera linea. Se ouede poner en el primer while. 
+    for linea in f:
+        l_chars = [] 
+        for letra in linea.rstrip().lower():
+            if letra.isalpha():
+                cambio_letra = chr(((ord(letra) - 97 + ord(clave[index]) - 97) % 26) + 97)
+                l_chars.append(cambio_letra)
+                index = (index + 1) % len(clave) #Se va cambiando la letra de la clave para sumar respectivamente a la letra correspondiente. 
             else:
-                index += 1
-        else:
-            s_aux += letra
-    l_final.append(s_aux + "\n")
-l_final[-1] = l_final[-1][:-1]
+                l_chars.append(letra)
+        l_final.append("".join(l_chars) + "\n") #Se agrega a la lista final el string encriptado 
+        
+l_final[-1] = l_final[-1][:-1] # se elimina el \n. Por que se hace? es necesario para el writelines. 
 with open(arc_d, "w") as f:
     f.writelines(l_final)
 
+    
