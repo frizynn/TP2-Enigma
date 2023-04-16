@@ -1,12 +1,12 @@
 def pedir_nombre_archivo():
-    arc_o = input("Ingrese nombre del archivo en texto plano: ")
+    arc_o = input("Ingrese nombre del archivo encriptado: ")
     while True:
         try:
             open(arc_o).close()
             break
         except:
             print("...\nNo se pudo abrir el archivo")
-            arc_o = input("Ingrese nombre del archivo en texto plano: ")
+            arc_o = input("Ingrese nombre del archivo encriptado: ")
     return arc_o
 
 def pedir_clave():
@@ -21,12 +21,12 @@ def pedir_clave():
 
 def pedir_nombre_archivo_destino(arc_o):
     while True:
-        arc_d = input("Ingrese nombre del archivo para la encripción:")
+        arc_d = input("Ingrese nombre del archivo para la desencripción:")
         if arc_d != arc_o or input("Ha ingresado el mismo archivo de origen que destino. Está seguro de que quiere sobreescribir los datos? (Y/N)").lower() == "y":
             break
     return arc_d
 
-def encripcion(arc_o, clave):
+def desencripcion(arc_o, clave):
     l_final = [] 
     index = 0
 
@@ -35,7 +35,7 @@ def encripcion(arc_o, clave):
             l_chars = [] 
             for letra in linea.rstrip().lower():
                 if letra.isalpha():
-                    cambio_letra = chr(((ord(letra) - 97 + ord(clave[index]) - 97) % 26) + 97)
+                    cambio_letra = chr(((ord(letra) - 97 - (ord(clave[index]) - 97)) % 26) + 97)
                     l_chars.append(cambio_letra)
                     index = (index + 1) % len(clave)
                 else:
@@ -53,7 +53,7 @@ def main():
     arc_o = pedir_nombre_archivo()
     clave = pedir_clave()
     arc_d = pedir_nombre_archivo_destino(arc_o)
-    l_final = encripcion(arc_o, clave)
+    l_final = desencripcion(arc_o, clave)
     escribir_lineas(arc_d, l_final)
 
 if __name__ == "__main__":
