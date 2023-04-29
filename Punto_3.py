@@ -40,17 +40,35 @@ def Friedman_graph(texto:str):
             l_aux.append(IoC(str_aux, texto))
             #l_aux.append(str_aux)         # Podría hacer directamente el IoC acá y dsp abajo un promedio
         promedio_IoC = sum(l_aux) / len(l_aux)
-        l.append(promedio_IoC)
+        l.append((num, promedio_IoC))
     # ACÁ IRÍA EL GRÁFICO
-    for promedio in l:
-        if promedio >= 0.068:             # NO ES EXACTAMENTE EL VALOR QUE NOS PASARON
-            return promedio
+    for tupla in l:
+        if tupla[1] >= 0.068:             # NO ES EXACTAMENTE EL VALOR QUE NOS PASARON
+            return tupla[0]
 
-def freq_analysis(ing_dict:dict, i:int):
+def freq_analysis(largo:int, texto:str):
     # Según el largo de la clave, recorremos el texto con indexado, y sacamos el IoC de cada letra, de cada array según el largo, y hacemos el gráfico.
-    pass
-
-# leer el archivo
+    ENGLISH_LETTERS_FRECUENCIES = {
+    "a": 0.08167, "b": 0.01492, "c": 0.02782, "d": 0.04253, "e": 0.12702, "f": 0.02228,
+    "g": 0.02015, "h": 0.06094, "i": 0.06966, "j": 0.00153, "k": 0.00772, "l": 0.04025,
+    "m": 0.02406, "n": 0.06749, "o": 0.07507, "p": 0.01929, "q": 0.00095, "r": 0.05987,
+    "s": 0.06327, "t": 0.09056, "u": 0.02758, "v": 0.00978, "w": 0.02360, "x": 0.00150,
+    "y": 0.01974, "z": 0.00075
+    }
+    letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    d_final = {}
+    for i in range(largo):
+        d_aux = {}
+        str_aux = ""
+        index = i
+        while index < len(texto):
+            str_aux += texto[index]
+            index += largo
+        for letra in letras:
+            d_aux[letra] = IoC(letra, str_aux)
+        d_final[i] = d_aux
+    # Para este momento tenemos un diccionario con todos los valores de cada letra segun el IoC según el primer index del largo de la clave (o sea que en el ejemplo del profe tendríamos 5 diccionarios, con llaves 0, 1, 2, 3, 4)
+    # Acá iría el gráfico
 
 
 #LLAMAMOS FRIEDMAN GRAPH
@@ -63,3 +81,7 @@ def freq_analysis(ing_dict:dict, i:int):
 # mostrar los dos graficos.
 def main():
     arc = pedir_nombre_archivo()
+    texto = arc_to_only_letters(arc)
+    largo_clave = Friedman_graph(texto)
+    freq_analysis(largo_clave, texto)
+
