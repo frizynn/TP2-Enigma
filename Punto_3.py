@@ -19,14 +19,18 @@ def Fi(letra:str, texto:str) -> int:
 def IoC(letras:list, texto:str) -> int:
     valores = []
     for letra in letras:
-        valores.append(Fi(letra, texto))
-    promedio = sum(valores) / len(letras)
+        valores.append(Fi(letra, texto) * (Fi(letra, texto) - 1))
+    promedio = sum(valores) / len(texto) * (len(texto) - 1)
     return promedio
 
 def Friedman_graph(texto:str):
     # probamos con largos de clave de 1 a 30:
     for i in range(1, 30):
+        l = []
     # división del texto según el largo de la contra (i)
+        for grupo in grupos_de_letras:
+            l.append(IoC(grupo, texto))
+        promedio = sum(l) / len(grupos_de_letras)
         pass
     if i == 0.0686:
         return i             # ESTO ES CUALQUIER COSA PARA ENTENDERME
