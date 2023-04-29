@@ -41,16 +41,10 @@ def Friedman_graph(texto:str):
             #l_aux.append(str_aux)         # Podría hacer directamente el IoC acá y dsp abajo un promedio
         promedio_IoC = sum(l_aux) / len(l_aux)
         l.append(promedio_IoC)
-
-                
-            
-    # división del texto según el largo de la contra (i)
-        for grupo in grupos_de_letras:
-            l.append(IoC(grupo, texto))
-        promedio = sum(l) / len(grupos_de_letras)
-        pass
-    if i == 0.0686:
-        return i             # ESTO ES CUALQUIER COSA PARA ENTENDERME
+    # ACÁ IRÍA EL GRÁFICO
+    for promedio in l:
+        if promedio >= 0.068:             # NO ES EXACTAMENTE EL VALOR QUE NOS PASARON
+            return promedio
 
 def freq_analysis(ing_dict:dict, i:int):
     # Según el largo de la clave, recorremos el texto con indexado, y sacamos el IoC de cada letra, de cada array según el largo, y hacemos el gráfico.
