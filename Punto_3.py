@@ -1,12 +1,14 @@
 import matplotlib.pyplot as plt
 from P2 import pedir_nombre_archivo
 
-def arc_to_str(arc:str) -> str:
+def arc_to_only_letters(arc:str) -> str:
     texto = ""
     with open(arc) as f:
-        l = f.readlines()
-    for i in l:
-        texto += i
+        lineas = f.readlines()
+    for linea in lineas:
+        for caracter in linea:
+            if caracter.isalpha():
+                texto += caracter
     return texto
 
 def Fi(letra:str, texto:str) -> int:
@@ -24,9 +26,24 @@ def IoC(letras:list, texto:str) -> int:
     return promedio
 
 def Friedman_graph(texto:str):
+    l = []
     # probamos con largos de clave de 1 a 30:
-    for i in range(1, 30):
-        l = []
+    for num in range(1, 31):
+        index = 0
+        l_aux = []
+        for index in range(num):
+            str_aux = ""
+            while index < len(texto):
+            # HAY Q ESTAR SEGURO Q ESTO FUNCIONA
+                str_aux += texto[index]
+                index += num
+            l_aux.append(IoC(str_aux, texto))
+            #l_aux.append(str_aux)         # Podría hacer directamente el IoC acá y dsp abajo un promedio
+        promedio_IoC = sum(l_aux) / len(l_aux)
+        l.append(promedio_IoC)
+
+                
+            
     # división del texto según el largo de la contra (i)
         for grupo in grupos_de_letras:
             l.append(IoC(grupo, texto))
