@@ -55,7 +55,7 @@ def freq_analysis(largo:int, texto:str):
     "s": 0.06327, "t": 0.09056, "u": 0.02758, "v": 0.00978, "w": 0.02360, "x": 0.00150,
     "y": 0.01974, "z": 0.00075
     }
-    letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    letras = list(ENGLISH_LETTERS_FRECUENCIES.keys())
     d_final = {}
     for i in range(largo):
         d_aux = {}
