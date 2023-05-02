@@ -57,6 +57,10 @@ def Friedman_graph(texto:str):
     x = [i[0] for i in l]
     y = [i[1] for i in l]
     plt.bar(x, y)
+    plt.axhline(y=0.0686, color="black", linestyle="--")
+    plt.axhline(y=0.0385, color="black", linestyle="--")
+    plt.xlabel("Largo de la clave")
+    plt.ylabel("Indice de coincidencia")
     plt.show()
 
     for tupla in l:
@@ -80,6 +84,8 @@ def freq_analysis(largo:int, texto:str):
     
     plt.subplot(largo // 2 + largo % 2,2,1)
     plt.bar(l_x, l_y)
+    plt.title("Inglés")
+    plt.ylabel("Frecuencia")
 
     pos = 2
 
@@ -96,7 +102,10 @@ def freq_analysis(largo:int, texto:str):
 
         plt.subplot(largo // 2 + largo % 2, 2, pos)
         plt.bar(x, y)
+        plt.ylabel("Frecuencia")
+        plt.xlabel(f"Letra {index+1}")
         pos +=1
+
 
     
     plt.show()
