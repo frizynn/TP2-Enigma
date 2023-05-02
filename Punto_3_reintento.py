@@ -26,19 +26,11 @@ def IoC(texto:str) -> int:
     promedio = sum(valores) / (len(texto) * (len(texto) - 1))
     return promedio
 
-def IoC_individual(texto:str) -> int:
-    letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    lista_final = []
-    for letra in letras:
-        promedio = (Fi(letra, texto) * (Fi(letra, texto) - 1)) / (len(texto) * (len(texto) - 1))
-        lista_final.append((letra, promedio))
-    return lista_final
-
 def Friedman_graph(texto:str):
-    lista = []
     l = [(0, 0)]
     # probamos con largos de clave de 1 a 30:
     for num in range(1, 31):
+        index = 0
         l_aux = []
         for index in range(num):
             str_aux = ""
@@ -49,18 +41,11 @@ def Friedman_graph(texto:str):
             l_aux.append(IoC(str_aux))
             #l_aux.append(str_aux)         # Podría hacer directamente el IoC acá y dsp abajo un promedio
         promedio_IoC = sum(l_aux) / len(l_aux)
-        if promedio_IoC >= 0.06:
-            lista.extend(l_aux) # NO LOS TENGO PARA CADA LETRA, SINO PARA CADA VALOR (0, 1, 2, 3, 4) PHUCKIN SHIT
         l.append((num, promedio_IoC))
-
-    #GRÁFICO
-    x = [i[0] for i in l]
-    y = [i[1] for i in l]
-    plt.bar(x, y)
-    plt.show()
-
+    print(l)
+    # ACÁ IRÍA EL GRÁFICO
     for tupla in l:
-        if tupla[1] >= 0.06:             # NO ES EXACTAMENTE EL VALOR QUE NOS PASARON
+        if tupla[1] >= 0.068:             # NO ES EXACTAMENTE EL VALOR QUE NOS PASARON
             return tupla[0]
 
 def freq_analysis(largo:int, texto:str):
@@ -72,30 +57,18 @@ def freq_analysis(largo:int, texto:str):
     "s": 0.06327, "t": 0.09056, "u": 0.02758, "v": 0.00978, "w": 0.02360, "x": 0.00150,
     "y": 0.01974, "z": 0.00075
     }
-    l_x = []
-    l_y = []
-    for x, y in ENGLISH_LETTERS_FRECUENCIES.items():
-        l_x.append(x)
-        l_y.append(y)
-    
-    plt.bar(l_x, l_y)
-    plt.show()
-
-    for index in range(largo):
+    letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    d_final = {}
+    for i in range(largo):
+        d_aux = {}
         str_aux = ""
+        index = i
         while index < len(texto):
             str_aux += texto[index]
             index += largo
-
-        valores = IoC_individual(str_aux)
-
-        x = [i[0] for i in valores]
-        y = [i[1] for i in valores]
-
-        plt.bar(x, y)
-        plt.show()
-
-        
+        for letra in letras:
+            d_aux[letra] = IoC(letra, str_aux)
+        d_final[i] = d_aux
     # Para este momento tenemos un diccionario con todos los valores de cada letra segun el IoC según el primer index del largo de la clave (o sea que en el ejemplo del profe tendríamos 5 diccionarios, con llaves 0, 1, 2, 3, 4)
     # Acá iría el gráfico
 
@@ -112,7 +85,6 @@ def main():
     arc = pedir_nombre_archivo()
     texto = arc_to_only_letters(arc)
     largo_clave = Friedman_graph(texto)
-    freq_analysis(largo_clave, texto)
 
 if __name__ == "__main__":
     main()
