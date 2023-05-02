@@ -78,8 +78,10 @@ def freq_analysis(largo:int, texto:str):
         l_x.append(x)
         l_y.append(y)
     
+    plt.subplot(largo // 2 + largo % 2,2,1)
     plt.bar(l_x, l_y)
-    plt.show()
+
+    pos = 2
 
     for index in range(largo):
         str_aux = ""
@@ -92,22 +94,13 @@ def freq_analysis(largo:int, texto:str):
         x = [i[0] for i in valores]
         y = [i[1] for i in valores]
 
+        plt.subplot(largo // 2 + largo % 2, 2, pos)
         plt.bar(x, y)
-        plt.show()
+        pos +=1
 
-        
-    # Para este momento tenemos un diccionario con todos los valores de cada letra segun el IoC según el primer index del largo de la clave (o sea que en el ejemplo del profe tendríamos 5 diccionarios, con llaves 0, 1, 2, 3, 4)
-    # Acá iría el gráfico
+    
+    plt.show()
 
-
-#LLAMAMOS FRIEDMAN GRAPH
-# para cada largo, hacemos la formula del índice de coincidencia, y después lo promediamos (?
-# ese valor que nos da por cada largo de la clave, lo almacenamos (lista?) ya que tenemos que imprimir un gráfico que muestre cuánto da ese valor para cada largo
-# imprimimos el gráfico, con valores del 0 al 30 en x, y con valores del 0% al 7% en y. además, una recta y = 3,85% y otra y = 6,86%.
-
-#   TENGO QUE DIVIDIR EL TEXTO SEGÚN LA CLAVE QUE ME QUEDÓ, Y ASI PUEDO ANALIZAR LA FRECUENCIA DE CADA LETRA SEGÚN ESAS POSICIONES. ESO ESO ESO, POSICIONES, NO DIVIDIR EL TEXTO GOOOD.
-
-# mostrar los dos graficos.
 def main():
     arc = pedir_nombre_archivo()
     texto = arc_to_only_letters(arc)
