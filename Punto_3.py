@@ -28,11 +28,11 @@ def IoC(texto:str) -> int:
     promedio = sum(valores) / (len(texto) * (len(texto) - 1))
     return promedio
 
-def IoC_individual(texto:str) -> int:
+def aparicion_individual(texto:str) -> int:
     letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     lista_final = []
     for letra in letras:
-        promedio = (Fi(letra, texto) * (Fi(letra, texto) - 1)) / (len(texto) * (len(texto) - 1))
+        promedio = Fi(letra, texto) / (len(texto))
         lista_final.append((letra, promedio))
     return lista_final
 
@@ -63,6 +63,7 @@ def Friedman_graph(texto:str):
     plt.axhline(y=0.0385, color="black", linestyle="--")
     plt.xlabel("Largo de la clave")
     plt.ylabel("Indice de coincidencia")
+
     plt.show()
 
     for tupla in l:
@@ -97,7 +98,7 @@ def freq_analysis(largo:int, texto:str): #GRAFICAR FRREQ DE LETRAS EN INGLES Y D
             str_aux += texto[index]
             index += largo
 
-        valores = IoC_individual(str_aux)
+        valores = aparicion_individual(str_aux)
 
         x = [i[0] for i in valores]
         y = [i[1] for i in valores]

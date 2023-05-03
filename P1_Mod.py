@@ -35,6 +35,7 @@ def encripcion(arc_o, clave):
             l_chars = [] 
             for letra in linea.rstrip().lower():
                 if letra.isalpha():
+               #if ord(letra) in range(97, 123):               HAY QUE VER SI ESTO ANDA
                     cambio_letra = chr(((ord(letra) - 97 + ord(clave[index]) - 97) % 26) + 97)
                     l_chars.append(cambio_letra)
                     index = (index + 1) % len(clave)

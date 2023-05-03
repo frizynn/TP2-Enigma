@@ -27,14 +27,13 @@ def IoC(texto:str) -> int:
     return promedio
 
 
-def IoC_individual(texto:str) -> int:
+def aparicion_individual(texto:str) -> int:
     letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     lista_final = []
     for letra in letras:
-        promedio = (fi(letra, texto) * (fi(letra, texto) - 1)) / (len(texto) * (len(texto) - 1))
+        promedio = fi(letra, texto) / (len(texto))
         lista_final.append((letra, promedio))
     return lista_final
-
 
 def Friedman_graph(texto:str): # OPTIMIZARLO. Calcula los largos de clave
     lista = []
@@ -88,6 +87,7 @@ def freq_analysis(largo:int, texto:str):
     plt.bar(l_x, l_y)
     plt.title("Inglés",fontsize=8)
     plt.ylabel("Frecuencia",fontsize=8)
+    plt.subplots_adjust(hspace=0.6, wspace=0.45)
 
     pos = 2
     a = 1
@@ -101,14 +101,13 @@ def freq_analysis(largo:int, texto:str):
             str_aux += texto[index]
             index += largo
 
-        valores = IoC_individual(str_aux)
+        valores = aparicion_individual(str_aux)
 
         x = [i[0] for i in valores]
         y = [i[1] for i in valores]
 
         
         
-        plt.subplots_adjust(hspace=0.6, wspace=0.45)
         plt.bar(x, y)
         plt.ylabel("Frecuencia",fontsize=8)
         
@@ -116,7 +115,6 @@ def freq_analysis(largo:int, texto:str):
         pos +=1
         a+=1
 
-    
     plt.show()
 
 def main():
