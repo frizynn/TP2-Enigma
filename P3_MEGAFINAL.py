@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
-from P2 import pedir_nombre_archivo, desencripcion, escribir_lineas
-
+from P2 import pedir_nombre_archivo, desencripcion, escribir_lineas, pedir_nombre_archivo_destino
 
 def file_to_letters(arc:str) -> str:
     texto = ""
@@ -16,32 +15,25 @@ def fi(letra:str, texto:str) -> int:
     return texto.count(letra)
 
 def IoC(texto:str) -> int:
-        
-    letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     valores = []
-    for letra in letras:
-        valores.append(fi(letra, texto) * ( fi(letra, texto) - 1))
-    
-    divisor = (len(texto) * (len(texto) - 1))
-    
-    if divisor == 0: #EST0 HAY QUE MEJORARLO Y CORREJIRLO PERO BASICAMENTE ES ALGO ASI. SE TENDRIA QUE PONER UN RETURN 0 Y QUE SE TERMINE EL PROGRAMA. PEDIR AYUDA WA WA WA AAAAA :( es la facuseñal
-        print('Divisor es 0 ')
-        exit()
-    else:
-        promedio = sum(valores) / divisor
-        return promedio
-    
 
+    for letra in range(97,123):
+        valores.append(fi(chr(letra), texto) * (fi(chr(letra), texto) - 1))
+    
+    if len(texto) * (len(texto) - 1) != 0:
+        promedio = sum(valores) / (len(texto) * (len(texto) - 1))
+        return promedio
+    else:
+        return -1
 
 def aparicion_individual(texto:str) -> int:
-    letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     lista_final = []
-    for letra in letras:
-        promedio = fi(letra, texto) / (len(texto))
-        lista_final.append((letra, promedio))
+    for letra in range(97,123):
+        promedio = fi(chr(letra), texto) / (len(texto))
+        lista_final.append((chr(letra), promedio))
     return lista_final
 
-def Friedman_graph(texto:str): # OPTIMIZARLO. Calcula los largos de clave 🥺👉🏻👈🏻🥺👉🏻👈🏻🥺👉🏻👈🏻🥺👉🏻👈🏻
+def Friedman_graph(texto:str) -> int:
     lista = []
     l = [(0, 0)]
    
@@ -50,21 +42,25 @@ def Friedman_graph(texto:str): # OPTIMIZARLO. Calcula los largos de clave 🥺�
         for index in range(num):
             str_aux = ""
             while index < len(texto):
-            
                 str_aux += texto[index]
                 index += num
-            l_aux.append(IoC(str_aux))
             
-        promedio_IoC = sum(l_aux) / len(l_aux)
-        if promedio_IoC >= 0.06:
-            lista.extend(l_aux) 
-        l.append((num, promedio_IoC))
+            promedio = IoC(str_aux)
+            if promedio != -1:
+                l_aux.append(promedio)
+        if len(l_aux) != 0:
+            promedio_IoC = sum(l_aux) / len(l_aux)
+            if promedio_IoC >= 0.06:
+                lista.extend(l_aux) 
+            l.append((num, promedio_IoC))
+        
+    if len(l) == 0:
+        return -1
 
         #GRÁFICO
     x = [i[0] for i in l]
     y = [i[1] for i in l]
     plt.bar(x, y)
-    
     plt.axhline(y=0.0686, color="lime", linestyle="--",label = 'IOC texto inglés')
     plt.axhline(y=0.0385, color="red", linestyle="--", label = 'IOC texto aleatorio')
     plt.legend(loc="upper right",fontsize=7)
@@ -75,6 +71,7 @@ def Friedman_graph(texto:str): # OPTIMIZARLO. Calcula los largos de clave 🥺�
     for tupla in l:
         if tupla[1] >= 0.06:             # NO ES EXACTAMENTE EL VALOR QUE NOS PASARON
             return tupla[0]
+    return -1
 
 def freq_analysis(largo:int, texto:str) -> list:
     # Según el largo de la clave, recorremos el texto con indexado, y sacamos el IoC de cada letra, de cada array según el largo, y hacemos el gráfico.
@@ -88,7 +85,10 @@ def freq_analysis(largo:int, texto:str) -> list:
     l_x = list(ENGLISH_LETTERS_FRECUENCIES.keys())
     l_y = list(ENGLISH_LETTERS_FRECUENCIES.values())
 
-    plt.subplot(largo // 2 + largo % 2,2,1)
+    if largo % 2 != 0:
+        plt.subplot(largo // 2 + largo % 2,2,1)
+    else:
+        plt.subplot(largo // 2 + (largo+1) % 2,2,1)
     plt.bar(l_x, l_y, label = 'IoC')
     
     plt.xticks(fontsize=8, rotation=15)
@@ -105,7 +105,10 @@ def freq_analysis(largo:int, texto:str) -> list:
     for index in range(largo):
         str_aux = ""
 
-        plt.subplot(largo // 2 + largo % 2, 2, pos)
+        if largo % 2 != 0:
+            plt.subplot(largo // 2 + largo % 2,2,pos)
+        else:
+            plt.subplot(largo // 2 + (largo+1) % 2,2,pos)
         plt.title(f"Letra {index+1} de la clave",fontsize=8)
 
         while index < len(texto):
@@ -139,24 +142,35 @@ def freq_analysis(largo:int, texto:str) -> list:
 
     return grandes
 
-de>
-
+def desplazamiento_calcular(letras_grandes):
+    clave = ""
+    for x in letras_grandes:
+        #print(x)
+        # EL INDEX DE "e" ES 4. Entonces, si la ""e"" cambiada es 5 por ejemplo, sabemos que hubo un desplazamiento de 1, lo que quiere decir que la primera letra de la clave es b (b=1).
+        valor_letra = chr(ord(x) - 4)  
+        clave += valor_letra
+        #SEGUN EL INDEX TENEMOS QUE CALCULAR EL DESPLAZAMENIENTO Y CALCULAR CUAL LETRA ES (DEL 0 AL 25)  PODEMOS USAR EL CHR
+    return clave
 
 def main():
     arc = pedir_nombre_archivo()
     texto = file_to_letters(arc)
     if len(texto)==0:
         print('Error, archivo vacío')
-    else:
-        largo_clave = Friedman_graph(texto)
-        desplaces = freq_analysis(largo_clave, texto)
-        clave = desplazamiento_calcular(desplaces)
-        lineas_escribir = desencripcion(arc, clave)
-        escribir_lineas("desencriptado.txt", lineas_escribir)
-        print(f'La clave es {clave}\nEl archivo fue guardado en desencriptado.txt')
+        return None
+    
+    largo_clave = Friedman_graph(texto)
+    if largo_clave == -1:
+        print("No se pudo encontrar la clave.")
+        return None
+        
+    desplaces = freq_analysis(largo_clave, texto)
+    clave = desplazamiento_calcular(desplaces)
+    lineas_escribir = desencripcion(arc, clave)
+    nombre = pedir_nombre_archivo_destino(arc)
+    escribir_lineas(nombre, lineas_escribir)
 
-
-
+    print(f"\n\n---------------------------------\n\nLa clave es '{clave}'\n\n---------------------------------\n\nSe guardó en el archivo {nombre}")
 
 if __name__ == "__main__":
     main()
