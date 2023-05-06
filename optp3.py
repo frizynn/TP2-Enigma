@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
-from P2 import pedir_nombre_archivo
+from P2 import pedir_nombre_archivo, desencripcion, escribir_lineas
 
 
 def file_to_letters(arc:str) -> str:
     with open(arc) as f:
         lineas = f.readlines()
-    print(''.join(caracter for linea in lineas for caracter in linea if caracter.isalpha()))
+    
     return ''.join(caracter for linea in lineas for caracter in linea if caracter.isalpha())
 
 def fi(letra:str, texto:str) -> int:
@@ -45,7 +45,7 @@ def Friedman_graph(texto:str) -> int:
         l_aux = []
         for index in range(num):
             texto_aux = texto[index::num]
-            print(texto_aux)
+            
             if len(texto_aux) > 1:
                 l_aux.append(IoC(texto_aux)) #SOY UN SIGMA A TU PUTA CASA WHILE DE MIERDA. este metodo lo puedo usar en freq analisis (largo de la clave)
         
@@ -90,8 +90,10 @@ def freq_analysis(largo:int, texto:str):
     plt.subplots_adjust(hspace=0.6, wspace=0.45)
 
     pos = 2
+    grandes = []
     for index in range(largo):
         str_aux = ""
+
         plt.subplot(largo // 2 + largo % 2, 2, pos)
         plt.title(f"Letra {index + 1} de la clave", fontsize=8)
 
@@ -99,9 +101,18 @@ def freq_analysis(largo:int, texto:str):
             str_aux += j
 
         valores = aparicion_individual(str_aux)
+        
+
+        
+        for x, y in valores:
+            if y > grande[1]:
+                grande = [x, y]
+        
+        grandes.append(grande[0]) 
 
         x = [i[0] for i in valores]
         y = [i[1] for i in valores]
+
 
         plt.bar(x, y, label="IoC")
         plt.legend(loc="upper right", fontsize=6.8) #COMO SE VE EL GRAFICO DEPENDE DE COMO LO ABRA LA PC DE CADA UNO. EN LA MIA SE VE BIEN PERO EN LA DE OTRO SE PUEDE VER MAL. TAMBIEN DEPENDE DE QUE TAN GRANDE HAGAS LA PESTANIA
@@ -110,7 +121,17 @@ def freq_analysis(largo:int, texto:str):
         pos += 1
 
     plt.show()
-    plt.show()
+    return grandes
+
+def desplazamiento_calcular(letras_grandes):
+    clave = ""
+    for x in letras_grandes:
+        
+        # EL INDEX DE "e" ES 4. Entonces, si la ""e"" cambiada es 5 por ejemplo, sabemos que hubo un desplazamiento de 1, lo que quiere decir que la primera letra de la clave es b (b=1).
+        valor_letra = chr(ord(x) - 4)  
+        clave += valor_letra
+        #SEGUN EL INDEX TENEMOS QUE CALCULAR EL DESPLAZAMENIENTO Y CALCULAR CUAL LETRA ES (DEL 0 AL 25)  PODEMOS USAR EL CHR
+    return clave
 
 def main():
     arc = pedir_nombre_archivo()
@@ -119,7 +140,11 @@ def main():
         print('Error, archivo vacío')
     else:
         largo_clave = Friedman_graph(texto)
-        freq_analysis(largo_clave, texto)
+        desplaces = freq_analysis(largo_clave, texto)
+        clave = desplazamiento_calcular(desplaces)
+        lineas_escribir = desencripcion(arc, clave)
+        escribir_lineas("desencriptado.txt", lineas_escribir)
+        print(f'La clave es {clave}\nEl archivo fue guardado en desencriptado.txt')
 
 
 if __name__ == "__main__":

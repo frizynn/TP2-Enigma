@@ -22,9 +22,15 @@ def IoC(texto:str) -> int:
     for letra in letras:
         valores.append(fi(letra, texto) * ( fi(letra, texto) - 1))
     
-    promedio = sum(valores) / (len(texto) * (len(texto) - 1))
+    divisor = (len(texto) * (len(texto) - 1))
     
-    return promedio
+    if divisor == 0: #EST0 HAY QUE MEJORARLO Y CORREJIRLO PERO BASICAMENTE ES ALGO ASI. SE TENDRIA QUE PONER UN RETURN 0 Y QUE SE TERMINE EL PROGRAMA. PEDIR AYUDA WA WA WA AAAAA :( es la facuseñal
+        print('Divisor es 0 ')
+        exit()
+    else:
+        promedio = sum(valores) / divisor
+        return promedio
+    
 
 
 def aparicion_individual(texto:str) -> int:
@@ -35,7 +41,7 @@ def aparicion_individual(texto:str) -> int:
         lista_final.append((letra, promedio))
     return lista_final
 
-def Friedman_graph(texto:str): # OPTIMIZARLO. Calcula los largos de clave
+def Friedman_graph(texto:str): # OPTIMIZARLO. Calcula los largos de clave 🥺👉🏻👈🏻🥺👉🏻👈🏻🥺👉🏻👈🏻🥺👉🏻👈🏻
     lista = []
     l = [(0, 0)]
    
@@ -58,8 +64,10 @@ def Friedman_graph(texto:str): # OPTIMIZARLO. Calcula los largos de clave
     x = [i[0] for i in l]
     y = [i[1] for i in l]
     plt.bar(x, y)
-    plt.axhline(y=0.0686, color="black", linestyle="--")
-    plt.axhline(y=0.0385, color="black", linestyle="--")
+    
+    plt.axhline(y=0.0686, color="lime", linestyle="--",label = 'IOC texto inglés')
+    plt.axhline(y=0.0385, color="red", linestyle="--", label = 'IOC texto aleatorio')
+    plt.legend(loc="upper right",fontsize=7)
     plt.xlabel("Largo de la clave")
     plt.ylabel("Indice de coincidencia")
     plt.show()
@@ -84,10 +92,14 @@ def freq_analysis(largo:int, texto:str) -> list:
         l_y.append(y)
     
     plt.subplot(largo // 2 + largo % 2,2,1)
-    plt.bar(l_x, l_y)
+    plt.bar(l_x, l_y, label = 'IoC')
+    
+    plt.xticks(fontsize=8, rotation=15)
+    plt.yticks(fontsize=8)
     plt.title("Inglés",fontsize=8)
+    plt.legend(loc="upper right",fontsize=8)
     plt.ylabel("Frecuencia",fontsize=8)
-    plt.subplots_adjust(hspace=0.6, wspace=0.45)
+    plt.subplots_adjust(hspace=0.6, wspace=0.35, left = 0.114, bottom=0.083, right = 0.94, top = 0.933)
 
     pos = 2
     
@@ -119,6 +131,8 @@ def freq_analysis(largo:int, texto:str) -> list:
         
         
         plt.bar(x, y,label="IoC")
+        plt.xticks(fontsize=8, rotation=15)
+        plt.yticks(fontsize=8)
         plt.legend(loc="upper right",fontsize=8)
         plt.ylabel("Frecuencia",fontsize=8)
         
@@ -150,7 +164,7 @@ def main():
         clave = desplazamiento_calcular(desplaces)
         lineas_escribir = desencripcion(arc, clave)
         escribir_lineas("desencriptado.txt", lineas_escribir)
-        print('La clave es '+ clave)
+        print(f'La clave es {clave}\nEl archivo fue guardado en desencriptado.txt')
 
 
 
