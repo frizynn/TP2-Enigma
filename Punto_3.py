@@ -159,15 +159,14 @@ def main():
     if largo_clave == -1:
         print("No se pudo encontrar la clave.")
         return None
-    print(largo_clave)
         
     desplaces = freq_analysis(largo_clave, texto)
     clave = desplazamiento_calcular(desplaces)
     lineas_escribir = desencripcion(arc, clave)
-    nombre = pedir_nombre_archivo_destino()
+    nombre = pedir_nombre_archivo_destino(arc)
     escribir_lineas(nombre, lineas_escribir)
 
-    print(f"La clave es '{clave}'.\n----------------\nSe guardó en el archivo {nombre}.")
+    print(f"La clave es '{clave}'\n\n---------------------------------\n\nSe guardó en el archivo {nombre}")
 
 if __name__ == "__main__":
     main()
