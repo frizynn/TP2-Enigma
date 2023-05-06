@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from P2 import pedir_nombre_archivo, desencripcion, escribir_lineas
+from P2 import pedir_nombre_archivo, desencripcion, escribir_lineas, pedir_nombre_archivo_destino
 
 
 def file_to_letters(arc:str) -> str:
@@ -149,8 +149,9 @@ def main():
         desplaces = freq_analysis(largo_clave, texto)
         clave = desplazamiento_calcular(desplaces)
         lineas_escribir = desencripcion(arc, clave)
-        escribir_lineas("desencriptado.txt", lineas_escribir)
-        print('La clave es '+ clave)
+        nombre = pedir_nombre_archivo_destino()
+        escribir_lineas(nombre, lineas_escribir)
+        print(f"La clave es '{clave}'.\n----------------\nSe guardó en el archivo {nombre}.")
 
 
 

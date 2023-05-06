@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 from P2 import pedir_nombre_archivo
 
-
 def file_to_letters(arc:str) -> str:
     with open(arc) as f:
         lineas = f.readlines()
