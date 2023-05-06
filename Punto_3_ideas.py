@@ -9,3 +9,4 @@
 # SOMOS CRACKS PANAAAAAAAAAAAAAAAAAAAAAAAA
 
 # preguntarle a guille si está bien que printee así el Friedman graph
+# SOMOS CRACKS PANAAAAAAAAAAAAAAAAAAAAAAAA 🥺👉🏻👈🏻
