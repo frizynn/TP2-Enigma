@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from P2 import pedir_nombre_archivo
+from P2 import pedir_nombre_archivo, desencripcion, escribir_lineas
 
 
 def file_to_letters(arc:str) -> str:
@@ -68,7 +68,7 @@ def Friedman_graph(texto:str): # OPTIMIZARLO. Calcula los largos de clave
         if tupla[1] >= 0.06:             # NO ES EXACTAMENTE EL VALOR QUE NOS PASARON
             return tupla[0]
 
-def freq_analysis(largo:int, texto:str):
+def freq_analysis(largo:int, texto:str) -> list:
     # Según el largo de la clave, recorremos el texto con indexado, y sacamos el IoC de cada letra, de cada array según el largo, y hacemos el gráfico.
     ENGLISH_LETTERS_FRECUENCIES = {
     "a": 0.08167, "b": 0.01492, "c": 0.02782, "d": 0.04253, "e": 0.12702, "f": 0.02228,
@@ -91,6 +91,8 @@ def freq_analysis(largo:int, texto:str):
 
     pos = 2
     
+    grandes = []
+
     for index in range(largo):
         str_aux = ""
 
@@ -103,6 +105,14 @@ def freq_analysis(largo:int, texto:str):
 
         valores = aparicion_individual(str_aux)
 
+        grande = [0,0]
+
+        for x, y in valores:
+            if y > grande[1]:
+                grande = [x, y]
+
+        grandes.append(grande[0]) 
+
         x = [i[0] for i in valores]
         y = [i[1] for i in valores]
 
@@ -112,11 +122,22 @@ def freq_analysis(largo:int, texto:str):
         plt.legend(loc="upper right",fontsize=8)
         plt.ylabel("Frecuencia",fontsize=8)
         
-    
         pos +=1
         
-
     plt.show()
+
+    return grandes
+
+def desplazamiento_calcular(letras_grandes):
+    clave = ""
+    for x in letras_grandes:
+        #print(x)
+        # EL INDEX DE "e" ES 4. Entonces, si la ""e"" cambiada es 5 por ejemplo, sabemos que hubo un desplazamiento de 1, lo que quiere decir que la primera letra de la clave es b (b=1).
+        valor_letra = chr(ord(x) - 4)  
+        clave += valor_letra
+        #SEGUN EL INDEX TENEMOS QUE CALCULAR EL DESPLAZAMENIENTO Y CALCULAR CUAL LETRA ES (DEL 0 AL 25)  PODEMOS USAR EL CHR
+    return clave
+
 
 def main():
     arc = pedir_nombre_archivo()
@@ -125,7 +146,13 @@ def main():
         print('Error, archivo vacío')
     else:
         largo_clave = Friedman_graph(texto)
-        freq_analysis(largo_clave, texto)
+        desplaces = freq_analysis(largo_clave, texto)
+        clave = desplazamiento_calcular(desplaces)
+        lineas_escribir = desencripcion(arc, clave)
+        escribir_lineas("desencriptado.txt", lineas_escribir)
+        print('La clave es '+ clave)
+
+
 
 
 if __name__ == "__main__":
