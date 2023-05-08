@@ -4,13 +4,7 @@
 
 # TENER EN CUENTA CASOS EN LOS QUE EL LARGO DEL TEXTO SEA MENOR DE 30 (con Y/N)
 
-def pedir_nombre_archivo_destino(arc_o, opc):
-    while True:
-        arc_d = input(f"Ingrese nombre del archivo para la {'des' if opc else ''}encripción:")
-        if arc_d != arc_o or input("Ha ingresado el mismo archivo de origen que destino. Está seguro de que quiere sobreescribir los datos? (Y/N)").lower() == "y":
-            break
-    return arc_d
+# NO NOS FIJAMOS SI EL ARCHIVO EN EL QUE DESEA ESCRIBIR YA EXISTE
 
-# PREGUNTARLE A GUILLE SI LE GUSTÓ
-
-# SOMOS CRACKS PANAAAAAAAAAAAAAAAAAAAAAAAA 🥺👉🏻👈🏻
+# EL PUNTO QUE TIENE LA AMYOR DIFERENCIA CON TODOS SUS ANTERIORES
+# EL PUNTO DEL FRIEDMAN GRAPH ES EL SALTO MÁS GRANDE QUE HAYA ENTRE EL ANTERIOR MÁXIMO Y EL ACTUAL, AUNQUE RECORRAMOS TODA LA LISTA, EL SALTO CON LOS MÚLTIPLOS VA A SER CHIQUITO.

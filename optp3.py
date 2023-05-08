@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from _35477_35355_tp2_p2 import pedir_nombre_archivo, desencripcion, escribir_lineas
+from p2_35477_35355_tp2 import pedir_nombre_archivo, desencripcion, escribir_lineas
 
 
 def file_to_letters(arc:str) -> str:

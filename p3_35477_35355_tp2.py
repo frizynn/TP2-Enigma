@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from _35477_35355_tp2_p2 import pedir_nombre_archivo, des_encripcion, escribir_lineas, pedir_nombre_archivo_destino
+from p2_35477_35355_tp2 import pedir_nombre_archivo, des_encripcion, escribir_lineas, pedir_nombre_archivo_destino
 
 def file_to_letters(arc:str) -> str:
     texto = ""
@@ -13,6 +13,7 @@ def file_to_letters(arc:str) -> str:
 
 
 def comprobar_largo_txt(texto):
+    descision = True
     if len(texto) <30:
         if input("El largo del exto no es suficiente para realziar el forazdo, desea proceder igualmente? (Y/N)").lower() == "y":
             descision = True
@@ -178,11 +179,12 @@ def main():
         
     desplaces = freq_analysis(largo_clave, texto)
     clave = desplazamiento_calcular(desplaces)
+    print(f"\n---------------------------------\n\nLa clave es '{clave}'\n\n---------------------------------\n")
     lineas_escribir = des_encripcion(arc, clave, False)
     nombre = pedir_nombre_archivo_destino(arc, False)
     escribir_lineas(nombre, lineas_escribir)
 
-    print(f"\n\n---------------------------------\n\nLa clave es '{clave}'\n\n---------------------------------\n\nSe guardó en el archivo {nombre}")
+    print(f"\n---------------------------------\n\nSe guardó en el archivo {nombre}")
 
 if __name__ == "__main__":
     main()

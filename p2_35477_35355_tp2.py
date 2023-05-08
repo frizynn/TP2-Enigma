@@ -1,4 +1,4 @@
-from _35477_35355_tp2_p1 import pedir_clave, pedir_nombre_archivo, pedir_nombre_archivo_destino, des_encripcion, escribir_lineas
+from p1_35477_35355_tp2 import pedir_clave, pedir_nombre_archivo, pedir_nombre_archivo_destino, des_encripcion, escribir_lineas
 
 def main():
     print("≡≡Encriptador de Cifrado de Vigenère≡≡")
