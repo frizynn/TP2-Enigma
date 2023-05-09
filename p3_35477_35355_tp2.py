@@ -15,7 +15,7 @@ def file_to_letters(arc:str) -> str:
 def comprobar_largo_txt(texto):
     descision = True
     if len(texto) <30:
-        if input("El largo del exto no es suficiente para realziar el forazdo, desea proceder igualmente? (Y/N)").lower() == "y":
+        if input("El largo del texto no es suficiente para realziar el forazdo, desea proceder igualmente? (Y/N)").lower() == "y":
             descision = True
         else:
             descision = False
@@ -176,7 +176,6 @@ def main():
     if largo_clave == -1:
         print("No se pudo encontrar la clave.")
         return None
-        
     desplaces = freq_analysis(largo_clave, texto)
     clave = desplazamiento_calcular(desplaces)
     print(f"\n---------------------------------\n\nLa clave es '{clave}'\n\n---------------------------------\n")
