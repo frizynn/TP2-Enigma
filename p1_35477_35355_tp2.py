@@ -10,38 +10,41 @@ def pedir_nombre_archivo(pedido:str):
     return arc_o
 
 def pedir_clave():
-    clave_real = ''
-    while True:
+    clave_invalida = True
+    while clave_invalida:
         clave = input("Ingrese la clave: ")
+        clave_invalida = False
+        if len(clave) == 0:
+            print("La clave está vacía")
+            clave_invalida = True
         for letra in clave:
-            if ord(letra) in range(97, 123):  
-                clave_real += letra
-            else:
+            if not ord(letra) in range(97, 123):  
                 print("...\nLa clave solo puede contener letras del alfabeto inglés")
-                break
-        if len(clave_real) == len(clave):
-            break
-    return clave_real
+                clave_invalida = True
+    return clave
 
 
-def pedir_nombre_archivo_destino(arc_o, opc):
+def pedir_nombre_archivo_destino(opc):
     archivo_invalido = True
     archivo_no_sobreescripto = True
     while archivo_invalido or archivo_no_sobreescripto:
         if archivo_invalido:
             arc_d = input(f"Ingrese nombre del archivo para la {'des' if opc else ''}encripción: ")
-        if arc_o != arc_d:
-            archivo_invalido = False
-            archivo_no_sobreescripto = False
+        if len(arc_d) == 0:
+            print("No ingresó un nombre válido")
         else:
-            des = input("Ha ingresado el mismo archivo de origen que destino. Está seguro de que quiere sobreescribir los datos? (Y/N)").lower()
-            if des == 'y':
-                archivo_no_sobreescripto = False
+            try:
+                open(arc_d).close()
+                des = input("El archivo existe, desea sobreescribirlo? (Y/N)\n").lower()
+                if des == 'y':
+                    archivo_no_sobreescripto = False
+                    archivo_invalido = False
+                elif des != 'n':
+                    print('No se ha ingresado una respuesta válida.')
+                    archivo_invalido = False
+            except:
                 archivo_invalido = False
-            elif des != 'n':
-                print('No se ha ingresado una respuesta válida.')
-                archivo_invalido = False
-                
+                archivo_no_sobreescripto = False                
     return arc_d
 
 
@@ -60,6 +63,8 @@ def des_encripcion(arc_o, clave,opc):
                 else:
                     l_chars.append(letra)
             l_final.append("".join(l_chars) + "\n")
+    if len(l_final) == 0:
+        return []
     l_final[-1] = l_final[-1][:-1]
     return l_final
 
@@ -71,9 +76,12 @@ def main():
     print("≡≡Desencriptador de Cifrado de Vigenère≡≡")
     arc_o = pedir_nombre_archivo("Ingrese nombre del archivo en texto plano: ")
     clave = pedir_clave()
-    arc_d = pedir_nombre_archivo_destino(arc_o, False)
+    arc_d = pedir_nombre_archivo_destino(False)
     l_final = des_encripcion(arc_o, clave,True)
-    escribir_lineas(arc_d, l_final)
+    if len(l_final) == 0:
+        print("El archivo está vacío")
+    else:
+        escribir_lineas(arc_d, l_final)
 
 if __name__ == "__main__":
     main()

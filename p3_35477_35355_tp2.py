@@ -15,7 +15,7 @@ def file_to_letters(arc:str) -> str:
 def comprobar_largo_txt(texto):
     descision = True
     if len(texto) <30:
-        if input("El largo del texto no es suficiente para realziar el forazdo, desea proceder igualmente? (Y/N)").lower() == "y":
+        if input("El largo del texto no es suficiente para realizar el forzado, desea proceder igualmente? (Y/N)\n").lower() == "y":
             descision = True
         else:
             descision = False
@@ -78,10 +78,21 @@ def Friedman_graph(texto:str) -> int:
     plt.ylabel("Indice de coincidencia")
     plt.show()
 
-    for tupla in l:
+    """  for tupla in l:
         if tupla[1] >= 0.06:             # NO ES EXACTAMENTE EL VALOR QUE NOS PASARON
-            return tupla[0]
-    return -1
+            return tupla[0] """
+    #return -1
+    return l
+
+def get_clave_len(l:list) -> int:
+    for tupla in l:
+        if tupla[0] == 0 or tupla[0] == 1:
+            salto = (tupla[0], tupla[1], -1)
+        else:
+            new_s = tupla[1] - salto[1]
+            if new_s > salto[2]:
+                salto = (tupla[0], tupla[1], new_s)
+    return salto[0]
 
 def freq_analysis(largo:int, texto:str) -> list:
     # Según el largo de la clave, recorremos el texto con indexado, y sacamos el IoC de cada letra, de cada array según el largo, y hacemos el gráfico.
@@ -172,7 +183,8 @@ def main():
     if not comprobar_largo:
         return None
 
-    largo_clave = Friedman_graph(texto)
+    lista_Friedman = Friedman_graph(texto)
+    largo_clave = get_clave_len(lista_Friedman)
     if largo_clave == -1:
         print("No se pudo encontrar la clave.")
         return None
@@ -180,7 +192,7 @@ def main():
     clave = desplazamiento_calcular(desplaces)
     print(f"\n---------------------------------\n\nLa clave es '{clave}'\n\n---------------------------------\n")
     lineas_escribir = des_encripcion(arc, clave, False)
-    nombre = pedir_nombre_archivo_destino(arc, False)
+    nombre = pedir_nombre_archivo_destino(False)
     escribir_lineas(nombre, lineas_escribir)
 
     print(f"\n---------------------------------\n\nSe guardó en el archivo {nombre}")
