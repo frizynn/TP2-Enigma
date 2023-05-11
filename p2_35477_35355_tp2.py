@@ -10,6 +10,7 @@ def main():
         print("El archivo encriptado está vacío, no se ha realizado nada.")
     else:
         escribir_lineas(arc_d, l_final)
+        print('Archivo desencriptado.')
 
 if __name__ == "__main__":
     main()
