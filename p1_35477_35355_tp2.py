@@ -1,86 +1,116 @@
-def pedir_nombre_archivo(pedido:str):
+def pedir_nombre_archivo(pedido: str) -> str:
+    """
+    Solicita al usuario el nombre de un archivo existente.
+
+    Args:
+        pedido (str): Mensaje que se mostrará al usuario para pedir el nombre del archivo.
+
+    Returns:
+       arc_o (str): Nombre del archivo existente.
+
+    Raises:
+        FileNotFoundError: Si no se pudo abrir el archivo.
+
+    """
+    # Solicita el nombre del archivo al usuario.
     arc_o = input(pedido)
+
+    # Bucle infinito para solicitar el nombre de un archivo existente.
     while True:
         try:
+            # Intenta abrir el archivo. Si se puede abrir, sale del bucle.
             open(arc_o).close()
             break
-        except:
+        except FileNotFoundError:
+            # Si no se puede abrir el archivo, muestra un mensaje de error y solicita nuevamente el nombre del archivo.
             print("...\nNo se pudo abrir el archivo")
             arc_o = input(pedido)
+
+    # Retorna el nombre del archivo existente.
     return arc_o
 
 def pedir_clave():
     """
-    Solicita al usuario que ingrese una clave que contenga solo letras del alfabeto inglés y devuelve la clave como una cadena.
+    Solicita al usuario que ingrese una clave que contenga solo letras del alfabeto inglés sin mayúsculas y devuelve la clave como una cadena.
 
     Returns:
         clave_real (str): La clave ingresada por el usuario como una cadena de letras del alfabeto inglés.
     """
-    clave_real = ''
-    clave_valida = False
+   
+    # Variable para indicar si la clave es inválida.
     
-    while not clave_valida:
+    
+    clave_invalida = True
+
+    # Bucle que se repetirá mientras la clave sea inválida.
+    while clave_invalida:
+        clave_invalida = False
+        # Solicita al usuario que ingrese la clave.
         clave = input("Ingrese la clave: ")
-        
-        if clave:
-            clave_valida = True
-            for letra in clave:
-                if ord(letra) not in range(97, 123):
-                    print("...\nLa clave solo puede contener letras del alfabeto inglés")
-                    clave_valida = False
-                    clave_real = ''
-                    break
-                else:
-                    clave_real += letra
-        else:
-            print("La clave no puede ser vacía. Inténtelo de nuevo.")
+
+        # Si la clave está vacía, se le pide al usuario que la ingrese nuevamente.
+        if len(clave) == 0:
+            print("La clave está vacía")
             
-    return clave_real
+            clave_invalida = True
+        
+
+        # Verifica que la clave contenga solo letras minúsculas del alfabeto inglés.
+        for letra in clave:
+            if not ord(letra) in range(97, 123):  
+                print("La clave solo puede contener letras minusuclas del alfabeto inglés")
+                clave_invalida = True
+                break
+        
+        # Si la clave es válida, se establece clave_invalida en False para salir del bucle.
+            
+    
+    # Retorna la clave validada.
+    return clave
 
 
 
-def pedir_nombre_archivo_destino(arc_o: str, opc: bool) -> str:
+def pedir_nombre_archivo_destino(opc: bool) -> str:
     """
     Solicita al usuario el nombre del archivo de destino para una operación de encriptación o desencriptación.
 
     Args:
-        arc_o (str): Nombre del archivo de origen.
         opc (bool): Indicador de operación (True para desencriptar, False para encriptar).
 
     Returns:
        arc_d (str): Nombre del archivo de destino.
     """
-    archivo_invalido = True
-    arc_d = ''
-    
-    while archivo_invalido:
-        # Solicita el nombre del archivo de destino.
-        arc_d = input(f"Ingrese nombre del archivo para la {'des' if opc else ''}encripción: ")
+    # Bandera que indica si el nombre de archivo es inválido.
+    archivo_invalido = True  
+    # Bandera que indica si se puede sobrescribir el archivo.
+    archivo_no_sobreescripto = True  
 
-        # Verifica si se ingresó un nombre válido.
-        if arc_d:
-            
-            archivo_invalido = False
-
-    
-
-    while arc_o == arc_d:
-        des = input("Ha ingresado el mismo archivo de origen que destino. ¿Está seguro de que quiere sobrescribir los datos? (Y/N)").lower()
-
-        # Verifica si se ingresó una respuesta válida.
-        while des not in ['y', 'n']:
-            print('No se ha ingresado una respuesta válida.')
-            des = input("Ha ingresado el mismo archivo de origen que destino. ¿Está seguro de que quiere sobrescribir los datos? (Y/N)").lower()
-
-        if des == 'n':
-            # Si el usuario no desea sobrescribir el archivo, solicita el nombre del archivo de destino nuevamente.
+     # Bucle mientras el archivo es inválido o no se puede sobrescribir.
+    while archivo_invalido or archivo_no_sobreescripto: 
+        # Si el archivo es inválido, solicita el nombre del archivo de destino.
+        if archivo_invalido:  
             arc_d = input(f"Ingrese nombre del archivo para la {'des' if opc else ''}encripción: ")
+             # Verifica si el nombre de archivo es inválido.
+        if len(arc_d) == 0: 
+            print("No ingresó un nombre válido")
         else:
-            break
-                
-    return arc_d
+            # Trata de abrir el archivo.
+            try:
+                with open(arc_d, 'x'):
+                    archivo_no_sobreescripto = False
+                    archivo_invalido = False
 
-
+            except FileNotFoundError:  
+                sobrescribir = input("El archivo ya existe, ¿desea sobrescribirlo? (Y/N) ").lower()
+                if sobrescribir == 'y':
+                    with open(arc_d, 'w'):
+                        archivo_no_sobreescripto = False
+                        archivo_invalido = False
+                elif sobrescribir == 'n':
+                    archivo_invalido = True
+                else:
+                    print('No ingresó una respuesta válida.')
+    return arc_d  
 
 
 
@@ -147,9 +177,9 @@ def main():
     print("≡≡Desencriptador de Cifrado de Vigenère≡≡")
     arc_o = pedir_nombre_archivo("Ingrese nombre del archivo en texto plano: ")
     clave = pedir_clave()
-    arc_d = pedir_nombre_archivo_destino(arc_o, False)
+    arc_d = pedir_nombre_archivo_destino(False)
     l_final = des_encripcion(arc_o, clave,True)
-
+    # if len de texto es 0 terminar code y no hacer que se ejecute lo otro
     #Si el archivo de origen está vacio, lo avisa y termina el codigo. 
     if len(l_final) == 0:
         print('El arcivo a encriptar está vacio, no se ha realizado nada.')

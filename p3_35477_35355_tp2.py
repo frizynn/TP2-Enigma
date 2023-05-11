@@ -79,7 +79,7 @@ def Friedman_graph(texto:str) -> int:
     plt.show()
 
     """  for tupla in l:
-        if tupla[1] >= 0.06:             # NO ES EXACTAMENTE EL VALOR QUE NOS PASARON
+        if tupla[1] >= 0.06:             # NO ES EXACTAMENTE EL VALOR QUE NOS PASARON NINGUN VALOR QUE ALCANCEN LOS LARGOS NO CORRECTOS PARA 30 DE LARGO DE CLAVE, SUPERA EL 0.06, Y NINGUN LARGO CORRECTO NO LO ALCANZA. CON ESTE THRESHOLD, NOS ASEGURAMOS ENCONTRARLOS IGUAL, Y EVITAMOS PROBLEMAS.
             return tupla[0] """
     #return -1
     return l
