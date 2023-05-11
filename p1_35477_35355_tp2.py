@@ -65,7 +65,7 @@ def pedir_nombre_archivo_destino(opc):
     return arc_d
 
 
-def des_encripcion(arc_o, clave,opc):
+def des_encripcion(arc_o, clave, opc):
     """
     Desencripta o encripta un archivo de texto.
 
