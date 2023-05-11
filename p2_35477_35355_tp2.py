@@ -6,7 +6,10 @@ def main():
     clave = pedir_clave()
     arc_d = pedir_nombre_archivo_destino(True)
     l_final = des_encripcion(arc_o, clave,False)
-    escribir_lineas(arc_d, l_final)
+    if len(l_final) == 0:
+        print("El archivo encriptado está vacío, no se ha realizado nada.")
+    else:
+        escribir_lineas(arc_d, l_final)
 
 if __name__ == "__main__":
     main()
