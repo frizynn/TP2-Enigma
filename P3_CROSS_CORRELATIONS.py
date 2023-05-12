@@ -40,7 +40,7 @@ def aparicion_individual(texto:str) -> int:
     lista_final = []
     for letra in range(97,123):
         promedio = fi(chr(letra), texto) / (len(texto))
-        lista_final.append((chr(letra), promedio))
+        lista_final.append((chr(letra), round(promedio, 5)))
     return lista_final
 
 def Friedman_graph(texto:str) -> int:
@@ -170,15 +170,12 @@ def desplazamiento_calcular(default_only_appearances, IoC_25_letras):
 
 def sacar_clave(largo_clave, default:dict, all_IoC):
     str_final = ""
-    desplaces = []
     default_only_appearances = []
     for val in default.values():
         default_only_appearances.append(val)
     for i in range(largo_clave):
         desplace = desplazamiento_calcular(default_only_appearances, all_IoC[i])
-        desplaces.append(desplace)
-    for desplac in desplaces:
-        str_final += chr(desplac + 97)
+        str_final += chr(desplace + 97)
     return str_final
 
 def main():
@@ -197,6 +194,7 @@ def main():
         return None
     all_IoC, default = freq_analysis(largo_clave, texto)
     clave = sacar_clave(largo_clave, default, all_IoC)
+    print(all_IoC)
     print(f"\n---------------------------------\n\nLa clave es '{clave}'\n\n---------------------------------\n")
     lineas_escribir = des_encripcion(arc, clave, False)
     nombre = pedir_nombre_archivo_destino(False)
