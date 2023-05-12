@@ -91,6 +91,7 @@ def pedir_nombre_archivo_destino(opc: bool) -> str:
         if archivo_invalido:  
             arc_d = input(f"Ingrese nombre del archivo para la {'des' if opc else ''}encripción: ")
              # Verifica si el nombre de archivo es inválido.
+        inv_chars = '\/:*?"<>|'
         if len(arc_d) == 0: 
             print("No ingresó un nombre válido")
         else:
@@ -110,6 +111,9 @@ def pedir_nombre_archivo_destino(opc: bool) -> str:
                     archivo_invalido = True
                 else:
                     print('No ingresó una respuesta válida.')
+            
+            except:
+                print("No ingresó un nombre válido")
     return arc_d  
 
 
