@@ -40,7 +40,7 @@ def aparicion_individual(texto:str) -> int:
     lista_final = []
     for letra in range(97,123):
         promedio = fi(chr(letra), texto) / (len(texto))
-        lista_final.append((chr(letra), round(promedio, 5)))
+        lista_final.append((chr(letra), promedio))
     return lista_final
 
 def Friedman_graph(texto:str) -> int:
@@ -110,7 +110,7 @@ def freq_analysis(largo:int, texto:str) -> list:
 
     pos = 2
     
-    all_vals = []
+    grandes = []
 
     for index in range(largo):
         str_aux = ""
@@ -127,7 +127,13 @@ def freq_analysis(largo:int, texto:str) -> list:
 
         valores = aparicion_individual(str_aux)
 
-        all_vals.append(valores)
+        grande = [0,0]
+
+        for x, y in valores:
+            if y > grande[1]:
+                grande = [x, y]
+
+        grandes.append(grande[0]) 
 
         x = [i[0] for i in valores]
         y = [i[1] for i in valores]
@@ -144,39 +150,17 @@ def freq_analysis(largo:int, texto:str) -> list:
         
     plt.show()
 
-    return all_vals, ENGLISH_LETTERS_FRECUENCIES
+    return grandes
 
-def euclidian_distance(a:list[int], b:list[int]) -> int:
-    summ = 0
-    for num1, num2 in zip(a, b):
-        summ += (num1 - num2) ** 2
-    return summ ** (0.5)
-
-def desplazamiento_calcular(default_only_appearances, IoC_25_letras):
-    euclidian_distances = []
-    only_appearance_list = []
-    menor = float("inf")
-    desplace = -1
-    for lista in IoC_25_letras:
-        only_appearance_list.append(lista[1])
-    for i in range(len(IoC_25_letras)):  # Debería ser siempre 25...
-        only_appearance_list_changed = only_appearance_list[i:] + only_appearance_list[:i]
-        euclidian_distances.append((i,euclidian_distance(default_only_appearances, only_appearance_list_changed)))
-    for i, v in euclidian_distances:
-        if v < menor:
-            menor = v
-            desplace = i
-    return desplace
-
-def sacar_clave(largo_clave, default:dict, all_IoC):
-    str_final = ""
-    default_only_appearances = []
-    for val in default.values():
-        default_only_appearances.append(val)
-    for i in range(largo_clave):
-        desplace = desplazamiento_calcular(default_only_appearances, all_IoC[i])
-        str_final += chr(desplace + 97)
-    return str_final
+def desplazamiento_calcular(letras_grandes):
+    clave = ""
+    for x in letras_grandes:
+        #print(x)
+        # EL INDEX DE "e" ES 4. Entonces, si la ""e"" cambiada es 5 por ejemplo, sabemos que hubo un desplazamiento de 1, lo que quiere decir que la primera letra de la clave es b (b=1).
+        valor_letra = chr(ord(x) - 4)  
+        clave += valor_letra
+        #SEGUN EL INDEX TENEMOS QUE CALCULAR EL DESPLAZAMENIENTO Y CALCULAR CUAL LETRA ES (DEL 0 AL 25)  PODEMOS USAR EL CHR
+    return clave
 
 def main():
     arc = pedir_nombre_archivo("Ingrese nombre del archivo a forzar la clave: ")
@@ -192,9 +176,8 @@ def main():
     if largo_clave == -1:
         print("No se pudo encontrar la clave.")
         return None
-    all_IoC, default = freq_analysis(largo_clave, texto)
-    clave = sacar_clave(largo_clave, default, all_IoC)
-    print(all_IoC)
+    desplaces = freq_analysis(largo_clave, texto)
+    clave = desplazamiento_calcular(desplaces)
     print(f"\n---------------------------------\n\nLa clave es '{clave}'\n\n---------------------------------\n")
     lineas_escribir = des_encripcion(arc, clave, False)
     nombre = pedir_nombre_archivo_destino(False)

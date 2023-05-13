@@ -70,6 +70,7 @@ def pedir_clave():
 
 
 
+
 def pedir_nombre_archivo_destino(opc: bool) -> str:
     """
     Solicita al usuario el nombre del archivo de destino para una operación de encriptación o desencriptación.
@@ -91,7 +92,6 @@ def pedir_nombre_archivo_destino(opc: bool) -> str:
         if archivo_invalido:  
             arc_d = input(f"Ingrese nombre del archivo para la {'des' if opc else ''}encripción: ")
              # Verifica si el nombre de archivo es inválido.
-        inv_chars = '\/:*?"<>|'
         if len(arc_d) == 0: 
             print("No ingresó un nombre válido")
         else:
@@ -101,7 +101,7 @@ def pedir_nombre_archivo_destino(opc: bool) -> str:
                     archivo_no_sobreescripto = False
                     archivo_invalido = False
 
-            except FileNotFoundError:  
+            except FileExistsError:  
                 sobrescribir = input("El archivo ya existe, ¿desea sobrescribirlo? (Y/N) ").lower()
                 if sobrescribir == 'y':
                     with open(arc_d, 'w'):
@@ -110,11 +110,9 @@ def pedir_nombre_archivo_destino(opc: bool) -> str:
                 elif sobrescribir == 'n':
                     archivo_invalido = True
                 else:
-                    print('No ingresó una respuesta válida.')
-            
-            except:
-                print("No ingresó un nombre válido")
-    return arc_d  
+                    print('No ingresó una respuesta válida. Intente de vuelta. ')
+                    archivo_invalido = False
+    return arc_d 
 
 
 
@@ -183,7 +181,7 @@ def main():
     clave = pedir_clave()
     arc_d = pedir_nombre_archivo_destino(False)
     l_final = des_encripcion(arc_o, clave,True)
-    # if len de texto es 0 terminar code y no hacer que se ejecute lo otro
+    
     #Si el archivo de origen está vacio, lo avisa y termina el codigo. 
     if len(l_final) == 0:
         print('El arcivo a encriptar está vacio, no se ha realizado nada.')
@@ -191,6 +189,7 @@ def main():
     else:
         escribir_lineas(arc_d, l_final)
         print('Archivo encriptado.')
+        print(f"\n---------------------------------\n\nLa encriptación se guardó en el archivo '{arc_d}'\n")
    
 
 if __name__ == "__main__":
