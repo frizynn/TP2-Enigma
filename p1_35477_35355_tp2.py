@@ -176,20 +176,29 @@ def escribir_lineas(arc_d: str, l_final: list[str]) -> None:
 
 
 def main():
+    """  
+
+    Función principal que realiza la ejecución del programa de encripción de un archivo (utilizando el Cifrado de Vigenère), encriptandolo mediante una clave ingresada por el usuario y guardandolo en un nuevo archivo a elección.
+    
+    """
     print("≡≡Desencriptador de Cifrado de Vigenère≡≡")
+    # Se pide al usuario el nombre del archivo encriptado, la clave y el nombre del archivo destino
     arc_o = pedir_nombre_archivo("Ingrese nombre del archivo en texto plano: ")
     clave = pedir_clave()
     arc_d = pedir_nombre_archivo_destino(False)
+
+    # Se realiza la encripción del archivo y se almacena el resultado en una lista
     l_final = des_encripcion(arc_o, clave,True)
     
-    #Si el archivo de origen está vacio, lo avisa y termina el codigo. 
+    #Si la lista está vacía, lo avisa y termina el codigo. 
     if len(l_final) == 0:
         print('El arcivo a encriptar está vacio, no se ha realizado nada.')
     
+    # Si la lista tiene elementos, se escribe en el archivo destino y se imprime un mensaje de éxito
     else:
         escribir_lineas(arc_d, l_final)
         print('Archivo encriptado.')
-        print(f"\n---------------------------------\n\nLa encriptación se guardó en el archivo '{arc_d}'\n")
+        print(f"\n---------------------------------\n\nLa encriptación se guardó en el archivo '{arc_d}'\n\n---------------------------------\n")
    
 
 if __name__ == "__main__":

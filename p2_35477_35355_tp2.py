@@ -2,12 +2,14 @@ from p1_35477_35355_tp2 import pedir_clave, pedir_nombre_archivo, pedir_nombre_a
 
 def main():
     """
-    Función principal del programa que realiza la desencripción (utilizando el Cifrado de Vigenère) de un archivo encriptado utilizando la clave 
-    ingresada por el usuario y lo guarda en un nuevo archivo.
+
+    Función principal que realiza la ejecución del programa de desencripción de un archivo (utilizando el Cifrado de Vigenère), encriptandolo mediante una clave ingresada por el usuario y guardandolo en un nuevo archivo a elección.
+
     """
 
-    # Se pide al usuario el nombre del archivo encriptado, la clave y el nombre del archivo destino
+    
     print("≡≡Desencriptador de Cifrado de Vigenère≡≡")
+    # Se pide al usuario el nombre del archivo encriptado, la clave y el nombre del archivo destino
     arc_o = pedir_nombre_archivo("Ingrese nombre del archivo encriptado: ")
     clave = pedir_clave()
     arc_d = pedir_nombre_archivo_destino(True)
@@ -22,7 +24,7 @@ def main():
     # Si la lista tiene elementos, se escribe en el archivo destino y se imprime un mensaje de éxito
     else:
         escribir_lineas(arc_d, l_final)
-        print(f"\n---------------------------------\n\nLa desencripción se guardó en el archivo '{arc_d}'\n")
+        print(f"\n---------------------------------\n\nLa desencripción se guardó en el archivo '{arc_d}'\n\n---------------------------------\n")
 
 if __name__ == "__main__":
     main()
